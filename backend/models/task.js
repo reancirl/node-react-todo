@@ -5,6 +5,10 @@ const schema = mongoose.Schema({
         type: String,
         required: [true, 'Name required!']
     }, 
+    status : {
+        type: Boolean,
+        default: true,
+    }
 }, {
     timestamps: true
 })

@@ -12,7 +12,8 @@ const store = asyncHandler(async(req, res) => {
         throw new Error('Provide name value!')
     }
     const task = await Task.create({
-        name: req.body.name
+        name: req.body.name,
+        status: req.body.status
     })
     res.status(201).json(task)
 })
@@ -47,9 +48,24 @@ const destroy = asyncHandler(async(req, res) => {
     })
 })
 
+const updateStatus = asyncHandler(async(req, res) => {
+    const task = await Task.findById(req.params.id)
+    if (!task) {
+        res.status(400)
+        throw new Error('Task not found!')
+    }
+
+    await Task.findByIdAndUpdate(req.params.id, {status:task.status == false ? true : false})
+    res.status(200).json({
+        id: req.params.id,
+        message: 'Status updated!'
+    })
+})
+
 module.exports = {
     index,
     store,
     update,
-    destroy
+    destroy,
+    updateStatus
 }
